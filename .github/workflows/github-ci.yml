@@ -20,5 +20,13 @@ jobs:
             CR_REPOSITORY: metrack
             IMAGE_TAG: ${{ github.sha }}
           run: |
-            docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+            docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest .
             docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+            docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest
+        - name: Deploy to Yandex
+          uses: appleboy/ssh-action@v1.0.3
+          with:
+            host: ${{ secrets.DEPLOY_HOST }}
+            username: ${{ secrets.DEPLOY_USER_NAME }}
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            script: ./update.sh
