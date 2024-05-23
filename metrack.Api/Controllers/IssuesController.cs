@@ -26,5 +26,10 @@ namespace metrack.Controllers
             return Ok(issue);
         }
 
+        [HttpDelete]
+        public async Task<ActionResult<Issue>> DeleteUser(Issue issue)
+        {
+            return NoContent();
+        }
     }
 }
