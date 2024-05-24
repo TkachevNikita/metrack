@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit} from "@angular/core";
 import {
     CdkDrag,
     CdkDragDrop,
@@ -10,13 +10,18 @@ import {
 import {MatCard} from "@angular/material/card";
 import {KanbanTaskComponent} from "../kanban-task/kanban-task.component";
 import {TaskModel} from "../../models/task.model";
-import {TaskStatusEnum} from "../../enums/task-status.enum";
+import {TaskTypeEnum} from "../../enums/task-type.enum";
 import {UserModel} from "../../models/user.model";
+import {TaskService} from "../../services/task.service";
+import {ITaskStage} from "../../interfaces/task-stage.interface";
+import {map, Observable} from "rxjs";
+import {AsyncPipe} from "@angular/common";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
-    selector: 'app-kanban-stage',
-    templateUrl: './kanban-stage.component.html',
-    styleUrls: ['./kanban-stage.component.scss'],
+    selector: 'app-kanban-board',
+    templateUrl: './kanban-board.component.html',
+    styleUrls: ['./kanban-board.component.scss'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
@@ -25,48 +30,48 @@ import {UserModel} from "../../models/user.model";
         MatCard,
         KanbanTaskComponent,
         CdkDropListGroup,
-    ]
+        AsyncPipe,
+    ],
 })
-export class KanbanStageComponent {
-    open: TaskModel[] = [
-        new TaskModel({
-            id: "2",
-            title: "Карточка 1",
-            period: "1234",
-            status: 0,
-            owner: new UserModel({
-                id: '1',
-                name: 'Nikita Tkachev'
+export class KanbanBoardComponent implements OnInit {
+    // public stages$: Observable<ITaskStage[]>;
+
+    private _destroyRef: DestroyRef = inject(DestroyRef);
+
+    constructor(private _taskService: TaskService, private _cdr: ChangeDetectorRef) { }
+
+    public ngOnInit(): void {
+        this._taskService.fetchTaskStages()
+            .pipe(
+                takeUntilDestroyed(this._destroyRef)
+            )
+            .subscribe({
+                next: (stages) => {
+                    for (let stage of stages) {
+                        switch (stage.title) {
+                            case 'Открыто':
+                                this.open = [...stage.issues];
+                                this._cdr.markForCheck();
+                                break;
+                            case 'В разработке':
+                                this.process = [...stage.issues];
+                                break;
+                            case 'Подлежит проверке':
+                                this.review = [...stage.issues];
+                                break;
+                            case 'Готово':
+                                this.done = [...stage.issues];
+                                break;
+                        }
+                    }
+                }
             })
-        }),
-        new TaskModel({
-            id: "3",
-            title: "Карточка 2",
-            period: "1234",
-            status: 0,
-            owner: new UserModel({
-                id: '1',
-                name: 'Dmitriy Klimov'
-            })
-        })
-  ];
+    }
 
-  process: TaskModel[] = [
-      new TaskModel({
-          id: "2",
-          title: "Карточка 1",
-          period: "1234",
-          status: 0,
-          owner: new UserModel({
-              id: '1',
-              name: 'Nikita Tkachev'
-          })
-      }),
-  ];
-
-  review: TaskModel[] = [];
-
-  done: TaskModel[] = [];
+    open: TaskModel[] = [];
+    process: TaskModel[] = [];
+    review: TaskModel[] = [];
+    done: TaskModel[] = [];
 
   public drop(event: CdkDragDrop<TaskModel[]>): void {
     if (event.previousContainer === event.container) {

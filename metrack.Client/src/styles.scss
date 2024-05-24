@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use '@angular/material-experimental' as matx;
+
+$m3-custom: (
+  color: (
+    primary: matx.$m3-azure-palette,
+    tertiary: matx.$m3-red-palette
+  )
+);
+
+$light-theme: matx.define-theme($m3-custom);
+
+html, body {
+    height: 100%;
+    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+    @include mat.all-component-themes($light-theme)
+}

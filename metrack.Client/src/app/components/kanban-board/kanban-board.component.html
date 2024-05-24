@@ -1,4 +1,23 @@
 <div class="kanban">
+<!--    @for(stage of stages$ | async; track stage) {-->
+<!--        <div class="kanban__stage">-->
+<!--            <h2>{{stage.title}}</h2>-->
+<!--            <div-->
+<!--                cdkDropList-->
+<!--                [id]="stage.id"-->
+<!--                [cdkDropListData]="stage.issues"-->
+<!--                [cdkDropListConnectedTo]="[openList, reviewList, doneList]"-->
+<!--                class="kanban__stage-list"-->
+<!--                (cdkDropListDropped)="drop($event)">-->
+<!--                @for (item of stage.issues; track item) {-->
+<!--                    <app-kanban-task [task]="item" cdkDrag>-->
+<!--                        {{item}}-->
+<!--                    </app-kanban-task>-->
+<!--                }-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    }-->
+
   <div class="kanban__stage">
     <h2>Открыта</h2>
     <div
@@ -9,9 +28,7 @@
       class="kanban__stage-list"
       (cdkDropListDropped)="drop($event)">
       @for (item of open; track item) {
-          <app-kanban-task [task]="item" cdkDrag>
-              {{item}}
-          </app-kanban-task>
+          <app-kanban-task [task]="item" cdkDrag></app-kanban-task>
       }
     </div>
   </div>
