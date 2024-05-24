@@ -1,11 +1,7 @@
-﻿using metrack.Controllers;
-using metrack.Domain.Context;
+﻿using metrack.Domain.Context;
 using metrack.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Reflection;
 
 namespace metrack.Api.Controllers
 {

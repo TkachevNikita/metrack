@@ -7,6 +7,6 @@ namespace metrack.Domain.Entities
         [Key]
         public Guid Id { get; set; }
         public string Title {  get; set; }
-        public Issue[] Issues { get; set; } = [];
+        public List<Issue> Issues { get; set; } = [];
     }
 }
