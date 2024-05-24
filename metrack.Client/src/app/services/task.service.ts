@@ -11,9 +11,8 @@ export class TaskService {
     public fetchTaskStages(): Observable<ITaskStage[]> {
         return this._http.get<ITaskStage[]>(`http://158.160.104.158/api/IssueStages`);
     }
-
-    public deleteTask(id: string) {
-        return this._http.delete(`http://158.160.104.158/api/Issues/${id}`)
-            .subscribe();
-    }
+    //
+    // public deleteTask(id: string) {
+    //     return this._http.delete(`http://158.160.104.158/api/Issues/${id}`);
+    // }
 }
