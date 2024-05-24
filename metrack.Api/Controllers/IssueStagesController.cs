@@ -15,7 +15,7 @@ namespace metrack.Api.Controllers
         [HttpGet]
         public async Task<List<IssueStage>> GetIssueStages()
         {
-            return await _db.Stages.ToListAsync();
+            return await _db.Stages.Include(s=>s.Issues).ToListAsync();
         }
 
         [HttpPut("{id}")]
