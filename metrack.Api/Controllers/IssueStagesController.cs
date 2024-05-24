@@ -19,7 +19,7 @@ namespace metrack.Api.Controllers
         [HttpGet]
         public async Task<List<IssueStage>> GetIssueStages()
         {
-            return await _db.IssueStages.ToListAsync();
+            return await _db.Stages.ToListAsync();
         }
 
         [HttpPut("{id}")]
@@ -41,7 +41,7 @@ namespace metrack.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<IssueStage>> CreateIssueStage(IssueStage issueStage)
         {
-            _db.IssueStages.Add(issueStage);
+            _db.Stages.Add(issueStage);
             await _db.SaveChangesAsync();
 
             return Ok(issueStage);

@@ -9,6 +9,6 @@ namespace metrack.Domain.Context
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<IssueStage> IssueStages { get; set; }
+        public DbSet<IssueStage> Stages { get; set; }
     }
 }
