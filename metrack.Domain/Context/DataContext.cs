@@ -6,5 +6,9 @@ namespace metrack.Domain.Context
     public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
     {
         public DbSet<Issue> Issues { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<IssueStage> IssueStages { get; set; }
     }
 }

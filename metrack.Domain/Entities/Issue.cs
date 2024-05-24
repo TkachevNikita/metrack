@@ -9,6 +9,7 @@ namespace metrack.Domain.Entities
         public string? Title { get; set; }
         public DateTime Period { get; set; }
         public int Status { get; set; }
+        public int Type { get; set; }
         public User? Owner { get; set; }
     }
 }
