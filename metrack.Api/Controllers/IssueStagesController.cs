@@ -23,7 +23,7 @@ namespace metrack.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<IssueStage>> AddIssue(IssueStage issueStage)
+        public async Task<ActionResult<IssueStage>> EditIssueStage(IssueStage issueStage)
         {
             var newIssueStage = new IssueStage
             {
@@ -32,7 +32,19 @@ namespace metrack.Api.Controllers
                 Issues = issueStage.Issues
             };
 
+            _db.Update(newIssueStage);
+            await _db.SaveChangesAsync();
+
             return Ok(newIssueStage);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<IssueStage>> CreateIssueStage(IssueStage issueStage)
+        {
+            _db.IssueStages.Add(issueStage);
+            await _db.SaveChangesAsync();
+
+            return Ok(issueStage);
         }
 
     }
