@@ -1,0 +1,70 @@
+<div class="kanban">
+  <div class="kanban__stage">
+    <h2>Открыта</h2>
+    <div
+      cdkDropList
+      #openList="cdkDropList"
+      [cdkDropListData]="open"
+      [cdkDropListConnectedTo]="[proccessList, reviewList, doneList]"
+      class="kanban__stage-list"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of open; track item) {
+          <app-kanban-task [task]="item" cdkDrag>
+              {{item}}
+          </app-kanban-task>
+      }
+    </div>
+  </div>
+
+  <div class="kanban__stage">
+    <h2>В разработке</h2>
+    <div
+      cdkDropList
+      #proccessList="cdkDropList"
+      [cdkDropListData]="process"
+      [cdkDropListConnectedTo]="[openList, doneList, reviewList]"
+      class="kanban__stage-list"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of process; track item) {
+          <app-kanban-task [task]="item" cdkDrag>
+              {{item}}
+          </app-kanban-task>
+      }
+    </div>
+  </div>
+
+  <div class="kanban__stage">
+    <h2>Подлежит проверке</h2>
+    <div
+      cdkDropList
+      #reviewList="cdkDropList"
+      [cdkDropListData]="review"
+      [cdkDropListConnectedTo]="[openList, proccessList, doneList]"
+      class="kanban__stage-list"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of review; track item) {
+          <app-kanban-task [task]="item" cdkDrag>
+              {{item}}
+          </app-kanban-task>
+      }
+    </div>
+  </div>
+
+  <div class="kanban__stage">
+    <h2>Готово</h2>
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="done"
+      [cdkDropListConnectedTo]="[openList, proccessList, reviewList]"
+      class="kanban__stage-list"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of done; track item) {
+          <app-kanban-task [task]="item"  cdkDrag>
+              {{item}}
+          </app-kanban-task>
+      }
+    </div>
+  </div>
+</div>
+
