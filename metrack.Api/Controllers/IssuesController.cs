@@ -87,7 +87,7 @@ namespace metrack.Controllers
             {
                 await _db.SaveChangesAsync();
             }
-            catch
+            catch(Exception ex)
             {
                 _logger.LogError(ex, "Ошибка редактирования задачи");
                 return BadRequest("Ошибка редактирования задачи");
