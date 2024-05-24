@@ -25,11 +25,11 @@ namespace metrack.Controllers
             if (string.IsNullOrWhiteSpace(issue.Title))
                 return BadRequest("Название задачи не может быть пустым");
 
-            this._db.Issues.Add(issue);
+            _db.Issues.Add(issue);
 
             try
             {
-                await this._db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -53,11 +53,11 @@ namespace metrack.Controllers
 
             var resultIssue = new Issue
             {
+                Id = existingIssue.Id,
                 Title = issue.Title,
-                Id = issue.Id,
-                Owner = existingIssue.Owner,
-                Status = existingIssue.Status,
-                Period = existingIssue.Period,
+                Owner = issue.Owner,
+                Status = issue.Status,
+                Period = issue.Period,
             };
 
             _db.Update(resultIssue);
