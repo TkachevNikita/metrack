@@ -2,14 +2,16 @@
 using metrack.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace metrack.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IssuesController(DataContext context) : ControllerBase
+    public class IssuesController(DataContext context, ILogger<IssuesController> logger) : ControllerBase
     {
         private readonly DataContext _db = context;
+        private readonly ILogger<IssuesController> _logger = logger;
 
         [HttpGet]
         public async Task<List<Issue>> GetUsers()
@@ -18,18 +20,81 @@ namespace metrack.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Issue>> CreateUser(Issue issue)
+        public async Task<ActionResult<Issue>> CreateIssue(Issue issue)
         {
+            if (string.IsNullOrWhiteSpace(issue.Title))
+                return BadRequest("Название задачи не может быть пустым");
+
             this._db.Issues.Add(issue);
-            await this._db.SaveChangesAsync();
+
+            try
+            {
+                await this._db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка создания задачи");
+                return BadRequest("Ошибка создания задачи");
+            }
 
             return Ok(issue);
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<Issue>> DeleteUser(Issue issue)
+        [HttpPut]
+        public async Task<ActionResult<Issue>> PutIssue(Issue issue)
         {
-            return NoContent();
+            if (string.IsNullOrWhiteSpace(issue.Title))
+                return BadRequest("Название задачи не может быть пустым");
+
+            var existingIssue = await _db.Issues.FirstOrDefaultAsync(t => t.Id == issue.Id);
+
+            if (existingIssue == null)
+                return NotFound("Задача не найдена");
+
+            var resultIssue = new Issue
+            {
+                Title = issue.Title,
+                Id = issue.Id,
+                Owner = existingIssue.Owner,
+                Status = existingIssue.Status,
+                Period = existingIssue.Period,
+            };
+
+            _db.Update(resultIssue);
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка редактирования задачи");
+                return BadRequest("Ошибка редактирования задачи");
+            }
+
+            return Ok(resultIssue);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Issue>> DeleteIssue(Guid id)
+        {
+            var issue = await _db.Issues.FirstOrDefaultAsync(t => t.Id == id);
+
+            if (issue == null)
+                return NotFound();
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                _logger.LogError(ex, "Ошибка редактирования задачи");
+                return BadRequest("Ошибка редактирования задачи");
+            }
+
+
+            return Ok();
         }
     }
 }
