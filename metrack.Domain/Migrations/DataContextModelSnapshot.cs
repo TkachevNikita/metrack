@@ -28,29 +28,25 @@ namespace metrack.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("IssueStageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("OwnerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Period")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IssueStageId");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Issues");
                 });
@@ -87,24 +83,6 @@ namespace metrack.Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("metrack.Domain.Entities.Issue", b =>
-                {
-                    b.HasOne("metrack.Domain.Entities.IssueStage", null)
-                        .WithMany("Issues")
-                        .HasForeignKey("IssueStageId");
-
-                    b.HasOne("metrack.Domain.Entities.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
-
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("metrack.Domain.Entities.IssueStage", b =>
-                {
-                    b.Navigation("Issues");
                 });
 #pragma warning restore 612, 618
         }

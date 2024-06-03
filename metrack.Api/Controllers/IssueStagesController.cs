@@ -12,11 +12,11 @@ namespace metrack.Api.Controllers
         private readonly DataContext _db = context;
         private readonly ILogger<IssueStagesController> _logger = logger;
 
-        [HttpGet]
-        public async Task<List<IssueStage>> GetIssueStages()
-        {
-            return await _db.Stages.Include(s=>s.Issues).ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<List<IssueStage>> GetIssueStages()
+        //{
+            
+        //}
 
         [HttpPut("{id}")]
         public async Task<ActionResult<IssueStage>> EditIssueStage(IssueStage issueStage)
@@ -25,7 +25,7 @@ namespace metrack.Api.Controllers
             {
                 Id = issueStage.Id,
                 Title = issueStage.Title,
-                Issues = issueStage.Issues
+                //Issues = issueStage.Issues
             };
 
             _db.Update(newIssueStage);
@@ -41,6 +41,12 @@ namespace metrack.Api.Controllers
             await _db.SaveChangesAsync();
 
             return Ok(issueStage);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<IssueStage>>> GetIssueStages()
+        {
+            return Ok(await _db.Stages.ToListAsync());
         }
 
     }

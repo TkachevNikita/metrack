@@ -1,4 +1,5 @@
-﻿using metrack.Domain.Context;
+﻿using metrack.Api.DTO;
+using metrack.Domain.Context;
 using metrack.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,19 +14,28 @@ namespace metrack.Controllers
         private readonly DataContext _db = context;
         private readonly ILogger<IssuesController> _logger = logger;
 
-        [HttpGet]
-        public async Task<List<Issue>> GetUsers()
+        [HttpGet()]
+        public async Task<IActionResult> GetIssues()
         {
-            return await _db.Issues.ToListAsync();
+            return Ok(await _db.Issues.ToListAsync());
         }
 
         [HttpPost]
         public async Task<ActionResult<Issue>> CreateIssue(Issue issue)
         {
-            if (string.IsNullOrWhiteSpace(issue.Title))
-                return BadRequest("Название задачи не может быть пустым");
+            var newIssue = new Issue
+            {
+                Name = issue.Name,
+                Phone = issue.Phone,
+                CreatedAt = DateTime.UtcNow,
+                Photo = issue.Photo,
+                Email = issue.Email,
+            };
 
-            _db.Issues.Add(issue);
+            if (string.IsNullOrWhiteSpace(issue.Name))
+                return BadRequest("Имя контакта не может быть пустым");
+
+            _db.Issues.Add(newIssue);
 
             try
             {
@@ -33,8 +43,8 @@ namespace metrack.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка создания задачи");
-                return BadRequest("Ошибка создания задачи");
+                _logger.LogError(ex, "Ошибка создания контакта");
+                return BadRequest("Ошибка создания контакта");
             }
 
             return Ok(issue);
@@ -43,8 +53,8 @@ namespace metrack.Controllers
         [HttpPut]
         public async Task<ActionResult<Issue>> PutIssue(Issue issue)
         {
-            if (string.IsNullOrWhiteSpace(issue.Title))
-                return BadRequest("Название задачи не может быть пустым");
+            if (string.IsNullOrWhiteSpace(issue.Name))
+                return BadRequest("Название контакта не может быть пустым");
 
             var existingIssue = await _db.Issues.FirstOrDefaultAsync(t => t.Id == issue.Id);
 
@@ -53,11 +63,11 @@ namespace metrack.Controllers
 
             var resultIssue = new Issue
             {
-                Id = existingIssue.Id,
-                Title = issue.Title,
-                Owner = issue.Owner,
-                Status = issue.Status,
-                Period = issue.Period,
+                Name = issue.Name,
+                Phone = issue.Phone,
+                CreatedAt = DateTime.UtcNow,
+                Photo = issue.Photo,
+                Email = issue.Email,
             };
 
             _db.Update(resultIssue);
@@ -87,7 +97,7 @@ namespace metrack.Controllers
             {
                 await _db.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка редактирования задачи");
                 return BadRequest("Ошибка редактирования задачи");

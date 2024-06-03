@@ -7,13 +7,10 @@ namespace metrack.Domain.Entities
     {
         [Key]
         public Guid Id { get; set; }
-        public string? Title { get; set; }
-        public DateTime Period { get; set; }
-        public int Status { get; set; }
-        public User? Owner { get; set; }
-        public Guid StageId { get; set; }
-
-        [ForeignKey(nameof(StageId))]
-        public virtual IssueStage Stage { get; set; }
+        public string? Name { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Photo {  get; set; }
     }
 }
