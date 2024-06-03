@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace metrack.Domain.Entities
 {
@@ -9,7 +10,10 @@ namespace metrack.Domain.Entities
         public string? Title { get; set; }
         public DateTime Period { get; set; }
         public int Status { get; set; }
-        public int Type { get; set; }
         public User? Owner { get; set; }
+        public Guid StageId { get; set; }
+
+        [ForeignKey(nameof(StageId))]
+        public virtual IssueStage Stage { get; set; }
     }
 }
