@@ -1,5 +1,4 @@
-﻿using metrack.Api.DTO;
-using metrack.Domain.Context;
+﻿using metrack.Domain.Context;
 using metrack.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
