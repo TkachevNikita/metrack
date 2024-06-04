@@ -34,11 +34,11 @@ export class AppComponent implements OnInit {
             )
             .subscribe({
                 next: (contact) => {
-                    this._contactService.createContact({
-                        ...contact,
-                        createdAt: new Date(),
-                        photo: ''
-                    })
+                    if (contact) {
+                        this._contactService.createContact({
+                            ...contact,
+                        })
+                    }
                 }})
     }
 }

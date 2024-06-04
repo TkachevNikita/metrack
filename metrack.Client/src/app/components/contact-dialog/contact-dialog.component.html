@@ -17,6 +17,8 @@
                 <input matInput formControlName="email">
                 <mat-hint>Введите email контакта</mat-hint>
             </mat-form-field>
+
+            <input type="file" (change)="onFileSelected($event)" formControlName="photo">
         </form>
     </mat-dialog-content>
     <mat-dialog-actions>

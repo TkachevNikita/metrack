@@ -30,6 +30,7 @@ import {ContactModel} from "../../models/contact.model";
 })
 export class ContactDialogComponent {
     public form: FormGroup;
+    private selectedFile: File | null = null;
 
     constructor(
         public dialogRef: MatDialogRef<ContactDialogComponent>,
@@ -45,7 +46,11 @@ export class ContactDialogComponent {
         this.dialogRef.close();
     }
 
+    public onFileSelected(event: any): void {
+        this.selectedFile = event.target.files[0];
+    }
+
     public createContact(): void {
-        this.dialogRef.close(this.form.value);
+        this.dialogRef.close({ ...this.form.value, photo: this.selectedFile });
     }
 }

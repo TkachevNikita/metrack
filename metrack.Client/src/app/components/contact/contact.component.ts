@@ -11,7 +11,7 @@ import {
     MatCardTitle
 } from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
-import {DatePipe} from "@angular/common";
+import {DatePipe, NgOptimizedImage} from "@angular/common";
 
 @Component({
     selector: 'app-contact',
@@ -26,7 +26,7 @@ import {DatePipe} from "@angular/common";
         MatButton,
         MatCardSubtitle,
         MatCardTitle,
-        DatePipe
+        DatePipe,
     ],
     standalone: true
 })
