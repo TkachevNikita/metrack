@@ -23,8 +23,8 @@ RUN dotnet publish "./metrack.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN apt update
-RUN apt install curl -y
+RUN apt-get update
+RUN apt-get install curl -y
 RUN curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -a
 RUN /root/yandex-cloud/bin/yc config set token $DEPLOY_SECRET_OAUTH
 
