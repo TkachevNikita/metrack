@@ -5,5 +5,8 @@
         @for (contact of contacts$ | async; track contact) {
             <app-contact [contact]="contact"></app-contact>
         }
+        @if ((contacts$ | async)!.length == 0) {
+            Отсутствуют контакты
+        }
     </div>
 </div>

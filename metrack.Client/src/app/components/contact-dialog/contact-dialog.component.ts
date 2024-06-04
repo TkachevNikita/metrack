@@ -9,11 +9,10 @@ import {MatFormField, MatHint, MatLabel} from "@angular/material/form-field";
 import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ContactModel} from "../../models/contact.model";
 
 @Component({
     templateUrl: './contact-dialog.component.html',
-    styleUrls: ['contact-dialog.component.scss'],
+    styleUrls: ['./contact-dialog.component.scss'],
     standalone: true,
     imports: [
         MatDialogContent,

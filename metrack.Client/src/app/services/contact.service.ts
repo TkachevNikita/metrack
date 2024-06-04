@@ -1,7 +1,7 @@
 import {DestroyRef, inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {IContact} from "../interfaces/contact.interface";
-import {BehaviorSubject, map, Observable, Subscription} from "rxjs";
+import {BehaviorSubject, map, Observable, Subscription, tap} from "rxjs";
 import {ContactModel} from "../models/contact.model";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
@@ -9,6 +9,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class ContactService {
     private _destroyRef: DestroyRef = inject(DestroyRef);
     private _contactsSubject = new BehaviorSubject<ContactModel[]>([]);
+
     public contacts$ = this._contactsSubject.asObservable();
 
     constructor(private _http: HttpClient) {
@@ -21,7 +22,11 @@ export class ContactService {
                 map((contacts: IContact[]) => contacts.map((contact: IContact) => new ContactModel(contact))),
                 takeUntilDestroyed(this._destroyRef)
             )
-            .subscribe(contacts => this._contactsSubject.next(contacts));
+            .subscribe({
+                next: (contacts) => {
+                    this._contactsSubject.next(contacts)
+                }}
+            );
     }
 
     public createContact(contact: IContact): void {

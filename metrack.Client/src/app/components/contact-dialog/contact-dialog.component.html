@@ -18,11 +18,13 @@
                 <mat-hint>Введите email контакта</mat-hint>
             </mat-form-field>
 
-            <input type="file" (change)="onFileSelected($event)" formControlName="photo">
+            <input type="file" (change)="onFileSelected($event)">
         </form>
     </mat-dialog-content>
     <mat-dialog-actions>
-        <button mat-raised-button (click)="closeDialog()">Отмена</button>
-        <button mat-raised-button (click)="createContact()" color="primary">Сохранить</button>
+        <div class="actions">
+            <button mat-raised-button (click)="closeDialog()">Отмена</button>
+            <button mat-raised-button (click)="createContact()" color="primary">Сохранить</button>
+        </div>
     </mat-dialog-actions>
 </div>
