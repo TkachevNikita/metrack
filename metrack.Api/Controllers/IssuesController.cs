@@ -7,6 +7,7 @@ using metrack.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 
@@ -120,9 +121,32 @@ namespace metrack.Controllers
         }
 
         [HttpGet("delele")]
-        public IActionResult Delele()
+        public IActionResult InvokeYandexCloudFunction([FromQuery] string fileName)
         {
-            return Ok(CloudService.DeleleFile("pen.png"));
+            try
+            {
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "/root/yandex-cloud/bin/yc",
+                        Arguments = $"serverless function invoke d4eio0oguub0ej0rkdhl -d {fileName}",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+                string result = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                return Ok(result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
     }
 }
