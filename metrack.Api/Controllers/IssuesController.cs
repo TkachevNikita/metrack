@@ -118,5 +118,12 @@ namespace metrack.Controllers
 
             return Ok();
         }
+
+        [HttpGet("delele")]
+        public IActionResult Delele()
+        {
+            CloudService.DeleleFile("pen.png");
+            return Ok();
+        }
     }
 }

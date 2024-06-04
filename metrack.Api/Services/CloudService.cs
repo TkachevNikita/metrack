@@ -1,6 +1,7 @@
 ﻿using Amazon.S3.Model;
 using Amazon.S3;
 using metrack.Domain.Entities;
+using System.Diagnostics;
 
 namespace metrack.Api.Services
 {
@@ -34,6 +35,11 @@ namespace metrack.Api.Services
                     await client.PutObjectAsync(request);
                 }
             }
+        }
+
+        public static void DeleleFile(string file)
+        {
+            Process.Start(@"yc serverless function invoke d4eio0oguub0ej0rkdhl -d '"+file+"'");
         }
     }
 }
