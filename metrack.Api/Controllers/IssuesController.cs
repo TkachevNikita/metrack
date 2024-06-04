@@ -1,8 +1,14 @@
-﻿using metrack.Domain.Context;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using metrack.Api.DTO;
+using metrack.Api.Services;
+using metrack.Domain.Context;
 using metrack.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 
 namespace metrack.Controllers
 {
@@ -20,14 +26,19 @@ namespace metrack.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Issue>> CreateIssue(Issue issue)
+        public async Task<ActionResult<Issue>> CreateIssue(IssueDTO issue)
         {
+
+            var photoUuid = Guid.NewGuid().ToString();
+
+            await CloudService.UploadFile(issue.Photo, photoUuid);
+
             var newIssue = new Issue
             {
                 Name = issue.Name,
                 Phone = issue.Phone,
                 CreatedAt = DateTime.UtcNow,
-                Photo = issue.Photo,
+                Photo = "https://storage.yandexcloud.net/metrack-bucket/" + photoUuid + '.' + Path.GetExtension(issue.Photo.FileName),
                 Email = issue.Email,
             };
 
@@ -46,7 +57,7 @@ namespace metrack.Controllers
                 return BadRequest("Ошибка создания контакта");
             }
 
-            return Ok(issue);
+            return Ok(newIssue);
         }
 
         [HttpPut]
