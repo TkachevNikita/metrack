@@ -20,7 +20,7 @@ jobs:
             CR_REPOSITORY: metrack
             IMAGE_TAG: ${{ github.sha }}
           run: |
-            docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest .
+            docker build --build-arg DEPLOY_SECRET_OAUTH=${secrets.DEPLOY_SECRET_OAUTH} -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest .
             docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
             docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest
         - name: Build, tag, and push frontend image to Yandex Cloud Container Registry
