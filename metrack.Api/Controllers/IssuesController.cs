@@ -92,6 +92,8 @@ namespace metrack.Controllers
             if (issue == null)
                 return NotFound();
 
+            _db.Issues.Remove(issue);
+
             try
             {
                 await _db.SaveChangesAsync();
