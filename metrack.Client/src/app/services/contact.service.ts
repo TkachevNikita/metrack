@@ -32,7 +32,7 @@ export class ContactService {
         formData.append('email', contact.email);
         formData.append('photo', contact.photo);
 
-        this._http.post('https://158.160.103.170/api/Issues', formData)
+        this._http.post('http://158.160.103.170/api/Issues', formData)
             .pipe(takeUntilDestroyed(this._destroyRef))
             .subscribe(() => {
                 this.loadContacts();
@@ -40,7 +40,7 @@ export class ContactService {
     }
 
     public deleteContact(id: string): Subscription {
-        return this._http.delete(`https://158.160.103.170/api/Issues/${id}`)
+        return this._http.delete(`http://158.160.103.170/api/Issues/${id}`)
             .pipe(takeUntilDestroyed(this._destroyRef))
             .subscribe(() => {
                 this.loadContacts();
@@ -48,6 +48,6 @@ export class ContactService {
     }
 
     private fetchContacts(): Observable<IContact[]> {
-        return this._http.get<IContact[]>('https://158.160.103.170/api/Issues');
+        return this._http.get<IContact[]>('http://158.160.103.170/api/Issues');
     }
 }
