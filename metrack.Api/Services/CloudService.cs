@@ -39,7 +39,7 @@ namespace metrack.Api.Services
 
         public static void DeleleFile(string file)
         {
-            Process.Start(@"yc serverless function invoke d4eio0oguub0ej0rkdhl -d '"+file+"'");
+            Process.Start(@"/root/yandex-cloud/bin/yc serverless function invoke d4eio0oguub0ej0rkdhl -d '" + file+"'");
         }
     }
 }
