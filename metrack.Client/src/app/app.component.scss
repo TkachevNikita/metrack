@@ -1,4 +1,10 @@
 .container {
-    padding: 0 70px;
+    padding: 30px 70px;
     height: 100%;
+}
+
+.contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
 }

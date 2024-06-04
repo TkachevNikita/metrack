@@ -1,3 +1,9 @@
 <div class="container">
-    <app-contact></app-contact>
+    <h1>Контакты</h1>
+    <button (click)="openDialog()" mat-stroked-button color="primary" style="margin-bottom: 15px;">Добавить контакт</button>
+    <div class="contacts">
+        @for (contact of contacts$ | async; track contact) {
+            <app-contact [contact]="contact"></app-contact>
+        }
+    </div>
 </div>

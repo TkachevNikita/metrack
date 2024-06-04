@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input, OnInit} from "@angular/core";
 import {ContactModel} from "../../models/contact.model";
 import {Observable} from "rxjs";
 import {ContactService} from "../../services/contact.service";
@@ -11,6 +11,7 @@ import {
     MatCardTitle
 } from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
+import {DatePipe} from "@angular/common";
 
 @Component({
     selector: 'app-contact',
@@ -24,18 +25,20 @@ import {MatButton} from "@angular/material/button";
         MatCardActions,
         MatButton,
         MatCardSubtitle,
-        MatCardTitle
+        MatCardTitle,
+        DatePipe
     ],
     standalone: true
 })
-export class ContactComponent implements OnInit {
-    public contacts$!: Observable<ContactModel[]>;
+export class ContactComponent {
+    @Input({
+        required: true
+    })
+    public contact!: ContactModel;
 
     constructor(private _contactService: ContactService) { }
 
-    public ngOnInit(): void {
-        this.contacts$ = this._contactService.getContacts();
+    public removeContact(id: string): void {
+        this._contactService.deleteContact(id);
     }
-
-
 }
