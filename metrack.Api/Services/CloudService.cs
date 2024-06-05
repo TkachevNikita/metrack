@@ -47,7 +47,7 @@ namespace metrack.Api.Services
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "/root/yandex-cloud/bin/yc",
-                        Arguments = $"serverless function invoke d4eio0oguub0ej0rkdhl -d {fileName}",
+                        Arguments = $"serverless function invoke d4eio0oguub0ej0rkdhl -d {fileName.Split('/')[fileName.Split('/').Length - 1]}",
                         RedirectStandardOutput = true,
                         UseShellExecute = false,
                         CreateNoWindow = true
