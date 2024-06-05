@@ -108,6 +108,7 @@ namespace metrack.Controllers
 
             try
             {
+                CloudService.DeleleFile(issue.Photo);
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -118,35 +119,6 @@ namespace metrack.Controllers
 
 
             return Ok();
-        }
-
-        [HttpGet("delele")]
-        public IActionResult InvokeYandexCloudFunction([FromQuery] string fileName)
-        {
-            try
-            {
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "/root/yandex-cloud/bin/yc",
-                        Arguments = $"serverless function invoke d4eio0oguub0ej0rkdhl -d {fileName}",
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    }
-                };
-
-                process.Start();
-                string result = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-
-                return Ok(result);
-            }
-            catch (System.Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
         }
     }
 }

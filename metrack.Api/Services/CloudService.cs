@@ -2,6 +2,7 @@
 using Amazon.S3;
 using metrack.Domain.Entities;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace metrack.Api.Services
 {
@@ -37,10 +38,33 @@ namespace metrack.Api.Services
             }
         }
 
-        public static string DeleleFile(string file)
+        public static string DeleleFile(string fileName)
         {
-            var ab = Process.Start(@"/root/yandex-cloud/bin/yc", "serverless function invoke d4eio0oguub0ej0rkdhl -d '" + file + "'");
-            return ab.ProcessName;
+            try
+            {
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "/root/yandex-cloud/bin/yc",
+                        Arguments = $"serverless function invoke d4eio0oguub0ej0rkdhl -d {fileName}",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+                string result = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                return result;
+            }
+            catch
+            {
+                throw new Exception("Server Error");
+            }
         }
+    }
     }
 }
