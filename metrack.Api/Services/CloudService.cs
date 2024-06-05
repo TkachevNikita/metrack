@@ -66,5 +66,4 @@ namespace metrack.Api.Services
             }
         }
     }
-    }
 }
